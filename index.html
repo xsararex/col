@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Music App Showcase</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="top-bar">
+  
+
+  <a href="index.html" class="top-btn">UI/UX Mobile App</a>
+  <a href="https://saraban.egov.go.th/archive/login.jsp" class="top-btn">sec2</a>
+  <a href="sec1.html" class="top-btn">sec1</a>
+  <a href="#" class="top-btn" id="openPdf">SuperPDF</a>
+</header>
+
+
+
+<main class="hero">
+
+  <div class="left">
+    <h1>The future of<br>music listening<br>experience</h1>
+
+    <div class="meta-left">
+      OTR.<br>
+      สำนักงาน อ.ต.ก.จังหวัดพิษณุโลก
+    </div>
+  </div>
+
+  <div class="center">
+    <img 
+      src="img/50.png"
+      alt="Phone Mockup"
+    >
+  </div>
+
+  <div class="right">
+    <p>
+      Redefines what a music app can be—transforming passive listening into an immersive, interactive experience.
+    </p>
+
+    <div class="meta-right">
+      Research<br>
+      Wireframing<br>
+      Designing<br>
+      Prototyping<br><br>
+      Location: Kerala, India
+    </div>
+  </div>
+
+</main>
+<!-- ===== PDF MODAL ===== -->
+<div class="modal-overlay" id="pdfModal">
+  <div class="modal-box">
+    <button class="close-modal" id="closePdf">✕</button>
+
+    <iframe 
+      src="pdf.html" 
+      frameborder="0"
+      class="pdf-frame">
+    </iframe>
+
+  </div>
+</div>
+
+
+<div class="bg-text">NEBULA</div>
+<script src="script.js"></script>
+
+</body>
+</html>

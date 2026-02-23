@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEC3 - Dashboard มิเตอร์</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background:#f4f6f9;
+  padding:20px;
+}
+
+h2 {
+  margin-bottom:20px;
+}
+
+.controls {
+  margin-bottom:20px;
+}
+
+select, button {
+  padding:8px 12px;
+  margin-right:10px;
+  margin-bottom:10px;
+  border-radius:6px;
+  border:1px solid #ccc;
+}
+
+button {
+  background:#2c3e50;
+  color:white;
+  cursor:pointer;
+}
+
+button:hover {
+  opacity:0.9;
+}
+
+table {
+  border-collapse: collapse;
+  width:100%;
+  background:#fff;
+}
+
+th, td {
+  border:1px solid #ddd;
+  padding:10px;
+  text-align:center;
+}
+
+th {
+  background:#2c3e50;
+  color:#fff;
+}
+
+.empty {
+  text-align:center;
+  padding:20px;
+  color:#888;
+}
+</style>
+</head>
+
+<body>
+
+<h2>SEC 3 - Dashboard มิเตอร์</h2>
+
+<div class="controls">
+
+  <!-- เลือกเดือน -->
+  <select id="monthSelect">
+    <option value="">-- เลือกเดือน --</option>
+    <option value="มกราคม">มกราคม</option>
+    <option value="กุมภาพันธ์">กุมภาพันธ์</option>
+    <option value="มีนาคม">มีนาคม</option>
+    <option value="เมษายน">เมษายน</option>
+    <option value="พฤษภาคม">พฤษภาคม</option>
+    <option value="มิถุนายน">มิถุนายน</option>
+    <option value="กรกฎาคม">กรกฎาคม</option>
+    <option value="สิงหาคม">สิงหาคม</option>
+    <option value="กันยายน">กันยายน</option>
+    <option value="ตุลาคม">ตุลาคม</option>
+    <option value="พฤศจิกายน">พฤศจิกายน</option>
+    <option value="ธันวาคม">ธันวาคม</option>
+  </select>
+
+  <button onclick="loadMonth()">แสดงข้อมูลตามเดือน</button>
+
+  <br>
+
+  <!-- เลือกผู้เช่า -->
+  <select id="tenantSelect">
+    <option value="">-- เลือกผู้เช่า --</option>
+  </select>
+
+  <button onclick="loadTenant()">ดูข้อมูลผู้เช่า</button>
+
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>ผู้เช่า</th>
+      <th>เดือน</th>
+      <th>ไฟใหม่</th>
+      <th>น้ำ1ใหม่</th>
+      <th>น้ำ2ใหม่</th>
+    </tr>
+  </thead>
+  <tbody id="tableBody">
+    <tr><td colspan="5" class="empty">กำลังโหลดข้อมูล...</td></tr>
+  </tbody>
+</table>
+
+<script>
+
+// 🔥 ใส่ URL Web App ของคุณตรงนี้
+const API_URL = "https://script.google.com/macros/s/AKfycbzYo6ezMeNk19b6QytcuK6h7XRwb_yd2bf1pJAfzec__Ab4uARPb7WrvQUNkHkNl7p38g/exec";
+
+
+// ==========================
+// โหลดรายชื่อผู้เช่า
+// ==========================
+async function loadTenants() {
+  try {
+    const res = await fetch(`${API_URL}?action=getTenants`);
+    const data = await res.json();
+
+    const select = document.getElementById("tenantSelect");
+
+    data.forEach(name => {
+      const option = document.createElement("option");
+      option.value = name;
+      option.textContent = name;
+      select.appendChild(option);
+    });
+
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+
+// ==========================
+// โหลดข้อมูลตามเดือน
+// ==========================
+async function loadMonth() {
+
+  const month = document.getElementById("monthSelect").value;
+  if (!month) return alert("กรุณาเลือกเดือน");
+
+  try {
+    const res = await fetch(`${API_URL}?action=getByMonth&month=${encodeURIComponent(month)}`);
+    const data = await res.json();
+    renderTable(data);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+
+// ==========================
+// โหลดข้อมูลตามผู้เช่า
+// ==========================
+async function loadTenant() {
+
+  const tenant = document.getElementById("tenantSelect").value;
+  if (!tenant) return alert("กรุณาเลือกผู้เช่า");
+
+  try {
+    const res = await fetch(`${API_URL}?action=getByTenant&tenant=${encodeURIComponent(tenant)}`);
+    const data = await res.json();
+    renderTable(data);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+
+// ==========================
+// แสดงผลตาราง
+// ==========================
+function renderTable(data) {
+
+  const tbody = document.getElementById("tableBody");
+  tbody.innerHTML = "";
+
+  if (!data || data.length === 0) {
+    tbody.innerHTML = "<tr><td colspan='5' class='empty'>ไม่มีข้อมูล</td></tr>";
+    return;
+  }
+
+  data.forEach(row => {
+
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td>${row.tenant || ""}</td>
+      <td>${row.month}</td>
+      <td>${row.elecNew}</td>
+      <td>${row.waterNew}</td>
+      <td>${row.water2New}</td>
+    `;
+
+    tbody.appendChild(tr);
+  });
+}
+
+
+// โหลด dropdown ตอนเปิดหน้า
+loadTenants();
+
+</script>
+
+</body>
+</html>

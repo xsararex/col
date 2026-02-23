@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Super PDF</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- jsPDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="pdf.css">
+</head>
+
+<body>
+
+<main class="hero">
+
+  <div class="pdf-card">
+
+    <h2>Create PDF</h2>
+
+    <input
+      type="text"
+      id="pdfName"
+      placeholder="PDF name"
+    >
+
+    <label class="file-select">
+      Select images
+      <input
+        type="file"
+        id="images"
+        accept="image/*"
+        multiple
+      >
+    </label>
+
+    <!-- แสดงจำนวนไฟล์ -->
+    <p id="fileCount" class="file-count"></p>
+    <div id="previewContainer"></div>
+    <button id="createPdf">Create PDF</button>
+
+    <div class="progress">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+  </div>
+
+</main>
+
+<div class="bg-text">SUPER PDF</div>
+
+<script src="script.js"></script>
+
+<!-- IMAGE PREVIEW MODAL -->
+<div id="imagePreviewModal" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.85);
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+">
+  <img id="previewLargeImage" style="
+    max-width:90%;
+    max-height:90%;
+    border-radius:12px;
+    box-shadow:0 0 30px rgba(0,0,0,0.5);
+  ">
+</div>
+
+</body>
+</html>
